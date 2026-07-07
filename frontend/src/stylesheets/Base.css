@@ -1,0 +1,28 @@
+:root {
+  --dark-green: #132a13;
+  --medium-dark-green: #31572c;
+  --medium-light-green: #90a955;
+  --light-green: #ecf39e;
+}
+
+body {
+  margin: 0;
+}
+
+* {
+  font-family: "Bricolage Grotesque", sans-serif;
+}
+
+h1,
+p,
+a {
+  color: var(--light-green);
+}
+
+h2 {
+  color: var(--medium-light-green);
+}
+
+div {
+  background: var(--dark-green);
+}

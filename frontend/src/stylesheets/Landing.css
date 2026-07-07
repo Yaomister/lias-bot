@@ -1,0 +1,26 @@
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100vh;
+}
+
+.title {
+  font-size: 3rem;
+}
+
+.subtitle {
+  font-style: italic;
+}
+
+.proceed {
+  color: var(--medium-light-green);
+  transition: color 0.2s ease;
+}
+
+.proceed:hover {
+  color: var(--light-green);
+}

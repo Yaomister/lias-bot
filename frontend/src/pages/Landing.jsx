@@ -1,3 +1,4 @@
+import Typewriter from "../effects/Typewriter";
 import "../stylesheets/Landing.css";
 import { useState } from "react";
 
@@ -9,7 +10,7 @@ const Landing = () => {
   const [showMessage, setShowMessage] = useState(false);
   return (
     <div className="landing-page">
-      <h1 className="title">{greeting}, Lia!</h1>
+      <Typewriter className="title">{`${greeting}, Lia!`}</Typewriter>
       <h2
         className="subtitle"
         onMouseEnter={() => {
@@ -24,7 +25,7 @@ const Landing = () => {
           : "Why am I doing this?"}
       </h2>
       <a className="proceed" href="/history">
-        START CHATTING
+        Enter the Abyss
       </a>
     </div>
   );

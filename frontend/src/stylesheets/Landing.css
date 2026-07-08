@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 2rem;
   width: 100%;
   height: 100vh;
 }
@@ -19,6 +19,7 @@
 .proceed {
   color: var(--medium-light-green);
   transition: color 0.2s ease;
+  text-decoration: none;
 }
 
 .proceed:hover {

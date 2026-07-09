@@ -24,7 +24,7 @@ const Landing = () => {
           ? "You've convinced me to feed your delusions!"
           : "Why am I doing this?"}
       </h2>
-      <a className="proceed" href="/history">
+      <a className="proceed" href="/chat-logs">
         Enter the Abyss
       </a>
     </div>

@@ -31,9 +31,9 @@ def create_chat():
     return
 
 
-@app.get("/load_chat")
+@app.get("/chat-logs")
 def load_chat():
-    return
+    return {}
 
 
 @app.post("/send-message")

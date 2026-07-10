@@ -1,21 +1,35 @@
+import { useEffect, useState } from "react";
 import api from "../api";
+import "../stylesheets/ChatLogs.css";
+import { useNavigate } from "react-router-dom";
 
-const ChatLogs = async () => {
-  const chatLogs = await api.get("/chat-logs");
+const ChatLogs = () => {
+  const navigate = useNavigate();
+  const [chatLogs, setChatLogs] = useState(null);
 
-  console.log(chatLogs);
+  useEffect(() => {
+    api.get("/chat-logs").then((res) => setChatLogs(res.data));
+  }, []);
 
-  if (chatLogs.data == "NONE") {
+  if (!chatLogs) return <div className="loading">Loading...</div>;
+
+  if (chatLogs.length == 0) {
     return (
       <div className="chat-logs">
-        <div className="chat-log-entires-container">
-          <h2>Past conversations</h2>
-        </div>
-        <h1>DWADWADWAW</h1>
-        <button className="empty-new-chat">let's talk</button>
+        <h1>We haven't been talking...</h1>
+        <button
+          className="new-chat"
+          onClick={async () => {
+            const newChat = await api.post("create-chat");
+            navigate(`/chat/${newChat.data.id}`);
+          }}
+        >
+          Let's talk
+        </button>
       </div>
     );
   } else {
+    console.log(chatLogs.length);
     return (
       <div className="chat-logs">
         {chatLogs.map((chatLog) => (

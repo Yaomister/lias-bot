@@ -2,6 +2,7 @@ import os
 from google import genai
 from google.genai import types
 from fastapi import FastAPI
+from models import Chat
 from fastapi.middleware.cors import CORSMiddleware
 from database import Base, engine, LocalSession
 from schemas import Message
@@ -28,13 +29,25 @@ client = genai.Client(api_key=os.getenv("API_KEY"))
 
 @app.post("/create-chat")
 def create_chat():
-    return
+    db = LocalSession()
+    try:
+        new_chat = Chat()
+        db.add(new_chat)
+        db.commit()
+        db.refresh(new_chat)
+        return {"id": new_chat.id}
+    finally:
+        db.close()
 
 
 @app.get("/chat-logs")
 def load_chat():
-    return {}
-
+    db = LocalSession()
+    try:
+        chats = db.query(Chat).all()
+        return [{'id': chat.id, 'title': chat.title} for chat in chats]
+    finally:
+        db.close()
 
 @app.post("/send-message")
 def chat(request: Message):

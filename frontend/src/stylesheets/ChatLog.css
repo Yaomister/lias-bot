@@ -1,0 +1,73 @@
+.chat-log {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.chat-log-entries-container {
+  background-color: var(--medium-dark-green);
+  border-radius: 10px;
+  width: 50%;
+  height: 20%;
+  overflow-y: scroll;
+  gap: 1px;
+}
+
+.chat-entry {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  transition: 0.2s ease-in-out;
+  border-radius: 10px;
+  padding: 0 10px;
+}
+
+.chat-entry:hover {
+  background: var(--medium-light-green);
+}
+
+.chat-entry:hover * {
+  color: white;
+}
+
+.new-chat {
+  text-decoration: none;
+  background: none;
+  border: none;
+  color: var(--medium-light-green);
+  font-size: 1rem;
+  transition: 0.2s ease-in-out;
+}
+
+.new-chat:hover {
+  color: var(--light-green);
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.buttons-container {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.buttons-container button {
+  border: none;
+  background: transparent;
+  transition: 0.2s ease-in-out;
+  color: var(--medium-light-green);
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.buttons-container button:hover {
+  color: var(--light-green);
+}

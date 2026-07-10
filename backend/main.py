@@ -1,8 +1,9 @@
 import os
+from models import Chat
 from google import genai
+from schemas import Message
 from google.genai import types
 from dotenv import load_dotenv
-from models import Chat, Message
 from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends
 from database import Base, engine, get_db
@@ -38,11 +39,11 @@ def create_chat(db: Session = Depends(get_db)):
         db.close()
 
 
-@app.get("/chat-logs")
+@app.get("/chat-log")
 def load_chat(db: Session = Depends(get_db)):
     try:
         chats = db.query(Chat).all()
-        return [{'id': chat.id, 'title': chat.title} for chat in chats]
+        return [{'id': chat.id, 'title': chat.title, "createdAt": chat.created_at} for chat in chats]
     finally:
         db.close()
 

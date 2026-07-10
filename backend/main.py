@@ -1,12 +1,12 @@
 import os
 from google import genai
 from google.genai import types
-from fastapi import FastAPI
-from models import Chat
-from fastapi.middleware.cors import CORSMiddleware
-from database import Base, engine, LocalSession
-from schemas import Message
 from dotenv import load_dotenv
+from models import Chat, Message
+from sqlalchemy.orm import Session
+from fastapi import FastAPI, Depends
+from database import Base, engine, get_db
+from fastapi.middleware.cors import CORSMiddleware
 
 
 load_dotenv()
@@ -26,10 +26,8 @@ app.add_middleware(
 
 client = genai.Client(api_key=os.getenv("API_KEY"))
 
-
 @app.post("/create-chat")
-def create_chat():
-    db = LocalSession()
+def create_chat(db: Session = Depends(get_db)):
     try:
         new_chat = Chat()
         db.add(new_chat)
@@ -41,8 +39,7 @@ def create_chat():
 
 
 @app.get("/chat-logs")
-def load_chat():
-    db = LocalSession()
+def load_chat(db: Session = Depends(get_db)):
     try:
         chats = db.query(Chat).all()
         return [{'id': chat.id, 'title': chat.title} for chat in chats]
@@ -50,8 +47,7 @@ def load_chat():
         db.close()
 
 @app.post("/send-message")
-def chat(request: Message):
-    db = LocalSession()
+def chat(request: Message, db: Session = Depends(get_db)):
 
     try:
         db.add(Message(sender = "user", message=request.message))

@@ -13,6 +13,8 @@ const ChatLog = () => {
 
   if (!chatLog) return <div className="loading">Loading...</div>;
 
+  console.error(chatLog);
+
   if (chatLog.length == 0) {
     return (
       <div className="chat-log">
@@ -37,7 +39,7 @@ const ChatLog = () => {
             <div
               className="chat-entry"
               onClick={() => {
-                navigate(`chat/${chatLog.id}`);
+                navigate(`/chat/${entry.id}`);
               }}
             >
               <p className="chat-entry-title">{entry.title}</p>

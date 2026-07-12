@@ -5,6 +5,7 @@ import { ChatLog } from "./pages/ChatLog.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./stylesheets/Base.css";
+import { Chat } from "./pages/Chat.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -12,6 +13,7 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/chat-log" element={<ChatLog />} />
+        <Route path="/chat/:id" element={<Chat />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

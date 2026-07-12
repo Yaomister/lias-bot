@@ -1,13 +1,15 @@
 import os
-from models import Chat
 from google import genai
 from schemas import Message
 from google.genai import types
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends
-from database import Base, engine, get_db
+from models import Chat, ChatMessage
+from sse_starlette.sse import EventSourceResponse
 from fastapi.middleware.cors import CORSMiddleware
+from database import Base, engine, get_db, LocalSession
+
 
 
 load_dotenv()
@@ -50,24 +52,30 @@ def load_chat(db: Session = Depends(get_db)):
 @app.post("/send-message")
 def chat(request: Message, db: Session = Depends(get_db)):
 
-    try:
-        db.add(Message(sender = "user", message=request.message))
-
-        response = client.models.generate_content(
-            model ='gemini-2.0-flash',
-            config=types.GenerateContentConfig(
-                system_instruction="You are a helpful data analyst. Respond strictly in JSON format."),
-                contents="Summarize our Q3 sales performance."
-        )
-
-        db.add(Message(sender = "ai", message=response.text))
-
+        db.add(ChatMessage(chat_id=request.chat_id, sender="user", text=request.text))
         db.commit()
+        
+        def generate():
+            response = ""
+            stream = client.models.generate_content_stream(
+                model ='gemini-3.5-flash',
+                contents=request.text,
+                config=types.GenerateContentConfig(
+                    system_instruction="You are a helpful data analyst. Respond strictly in JSON format."),
+            )
+            for chunk in stream:
+                if chunk.text:
+                    response += chunk.text
+                    yield {"data": chunk.text}
 
-        return {"response" : response.text}
+            _db = LocalSession()
+            try:
+                _db.add(ChatMessage(char_id = request.chat_id, sender = "ai", message=response))
+                _db.commit()
+            finally:
+                _db.close()
+            
+            yield {"event": "done", "data": ""}
 
-    except:
-        print("unable to chat with gemini")
-    finally:
-        db.close()
+        return EventSourceResponse(generate())
     

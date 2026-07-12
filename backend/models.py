@@ -10,12 +10,13 @@ class Chat(Base):
     title = Column(String, default="New Chat")
     created_at = Column(DateTime, server_default=func.now())
 
-    messages = Relationship("Message", back_populates="chat")
+    messages = Relationship("ChatMessage", back_populates="chat")
 
-class Message(Base):
+class ChatMessage(Base):
     __tablename__ = "messages"
 
     id = Column(Integer, primary_key=True)
+    sender =  Column(String)
     chat_id = Column(Integer, ForeignKey("chats.id"))
     text = Column(String)
     created_at = Column(DateTime, server_default=func.now())

@@ -1,0 +1,16 @@
+.chat-container {
+  width: 100%;
+  height: 80vh;
+}
+
+.chat-title {
+  margin-left: 3rem;
+}
+.chat {
+  width: 96%;
+  height: 100%;
+  margin: 1%;
+  padding: 1%;
+  border-radius: 10px;
+  overflow-y: scroll;
+}

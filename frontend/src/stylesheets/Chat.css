@@ -5,7 +5,25 @@
 
 .chat-title {
   margin-left: 3rem;
+  margin-top: 2rem;
+  color: var(--medium-light-green);
+  background-color: transparent;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: inherit;
+  border: none;
+  padding: 0;
 }
+
+.chat-title-editing {
+  border: none;
+}
+
+.chat-title-editing:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .chat {
   width: 96%;
   height: 100%;
@@ -13,4 +31,65 @@
   padding: 1%;
   border-radius: 10px;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.top-bar {
+  width: 96%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-button {
+  text-decoration: none;
+  font-style: italic;
+}
+
+.message {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  color: var(--light-green);
+}
+
+.sender {
+  color: var(--medium-light-green);
+  white-space: nowrap;
+}
+
+.input-bar-container {
+  width: 95%;
+  margin-left: 2.5%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.input-bar {
+  flex: 1;
+  min-width: 0;
+  background-color: var(--medium-light-green);
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: none;
+  color: var(--light-green);
+  font-size: 16px;
+}
+
+.send-button {
+  flex-shrink: 0;
+  width: auto;
+  background-color: var(--medium-dark-green);
+  padding: 0.75rem;
+  border: none;
+  border-radius: 10px;
+  color: var(--light-green);
+  font-style: italic;
 }

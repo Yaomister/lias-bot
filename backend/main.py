@@ -1,9 +1,9 @@
 import os
 from google import genai
-from schemas import Message
 from google.genai import types
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
+from schemas import Message, Title
 from fastapi import FastAPI, Depends
 from models import Chat, ChatMessage
 from sse_starlette.sse import EventSourceResponse
@@ -40,6 +40,23 @@ def create_chat(db: Session = Depends(get_db)):
     finally:
         db.close()
 
+@app.get("/chat/{chat_id}/messages/")
+def load_messages(chat_id: int, db: Session = Depends(get_db)):
+    messages = db.query(ChatMessage).where(ChatMessage.chat_id == chat_id).all()
+    return messages
+ 
+@app.get("/chat/{chat_id}")
+def load_messages(chat_id: int, db: Session = Depends(get_db)):
+    chat = db.query(Chat).where(Chat.id == chat_id).first()
+    return {"id": chat.id, "title": chat.title}
+
+
+@app.patch("/chat/{chat_id}")
+def update_title(chat_id: int, request: Title,  db: Session = Depends(get_db)):
+    chat = db.query(Chat).filter(Chat.id == chat_id).first()
+    chat.title = request.title
+    db.commit()
+    return {"id": chat.id, "title": chat.title}
 
 @app.get("/chat-log")
 def load_chat(db: Session = Depends(get_db)):

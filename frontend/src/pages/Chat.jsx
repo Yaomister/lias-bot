@@ -3,6 +3,7 @@ import "../stylesheets/Chat.css";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import api from "../api";
 import { useParams } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const Chat = () => {
   const { id } = useParams();
@@ -39,11 +40,18 @@ const Chat = () => {
       { sender: "ai", text: "" },
     ]);
     console.log("sending:", { chat_id: id, message: userText });
-    await fetchEventSource(import.meta.env.VITE_API_URL, {
+
+    await fetchEventSource(`${import.meta.env.VITE_API_URL}/send-message`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: id, text: userText }),
       onmessage(event) {
+        if (event.code == 503) {
+          toast(
+            "Google Gemini is currently unavailable. Please try at a later time!",
+          );
+          return;
+        }
         if (event.event == "done") {
           return;
         }
@@ -58,6 +66,7 @@ const Chat = () => {
 
   return (
     <div className="chat-container">
+      <Toaster />
       <div className="top-bar">
         {editingTitle ? (
           <input
@@ -92,7 +101,7 @@ const Chat = () => {
             <p className="sender">
               {message.sender == "user" ? "You" : "AI Girlfriend"} :
             </p>
-            <p>{message.text}</p>
+            <p>{message.text.length == 0 ? "thinking..." : message.text}</p>
           </div>
         ))}
       </div>

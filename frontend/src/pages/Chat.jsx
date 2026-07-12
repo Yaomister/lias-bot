@@ -52,11 +52,11 @@ const Chat = () => {
     <div className="chat-container">
       <h2 className="chat-title">SOME RANDOM ASS TITLE</h2>
       <div className="chat">
-        {messages.map((i, message) => {
-          return (
-            <div className={`message ${message.sender}`}>{message.text}</div>
-          );
-        })}
+        {messages.map((message, i) => (
+          <div key={i} className={`message ${message.sender}`}>
+            {message.text}
+          </div>
+        ))}
       </div>
 
       <div className="input-bar">

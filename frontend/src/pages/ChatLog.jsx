@@ -8,7 +8,16 @@ const ChatLog = () => {
   const [chatLog, setChatLog] = useState(null);
 
   useEffect(() => {
-    api.get("/chat-log").then((res) => setChatLog(res.data));
+    api
+      .get("/chat-log")
+      .then((res) => {
+        console.log("GOT IT");
+
+        setChatLog(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   if (!chatLog) return <div className="loading">Loading...</div>;

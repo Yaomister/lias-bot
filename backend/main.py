@@ -61,8 +61,9 @@ def chat(request: Message, db: Session = Depends(get_db)):
                 model ='gemini-3.5-flash',
                 contents=request.text,
                 config=types.GenerateContentConfig(
-                    system_instruction="You are a helpful data analyst. Respond strictly in JSON format."),
+                    system_instruction=base_prompt),
             )
+
             for chunk in stream:
                 if chunk.text:
                     response += chunk.text
@@ -70,7 +71,7 @@ def chat(request: Message, db: Session = Depends(get_db)):
 
             _db = LocalSession()
             try:
-                _db.add(ChatMessage(char_id = request.chat_id, sender = "ai", message=response))
+                _db.add(ChatMessage(chat_id = request.chat_id, sender = "ai", text=response))
                 _db.commit()
             finally:
                 _db.close()

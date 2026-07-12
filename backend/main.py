@@ -21,8 +21,11 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 app.add_middleware(
-    CORSMiddleware, 
-    allow_origins=["http://localhost:5173", "https://lias-49wqlzm1w-yaomisters-projects.vercel.app/"],
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://lias-bot.vercel.app",
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
